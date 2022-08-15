@@ -58,14 +58,11 @@ contract Lottery{
         require(participants.length >= 3);
         rand = uint (keccak256(abi.encodePacked(block.timestamp,msg.sender))) % participants.length;
         winner = participants[rand];
+        winner.transfer(getBalance()*9/10);
+        withdrawManagerFunds();
     }
 
     function lastWinner() public view returns(address){
         return winner;
-    }
-
-    function withdraw() public nonReentrant() {
-        winner.transfer(getBalance()*9/10);
-        withdrawManagerFunds();
     }
 }
